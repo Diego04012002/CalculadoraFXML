@@ -102,8 +102,6 @@ public class Controller implements Initializable {
 	
 		funcion=e.getSource().toString().charAt(e.getSource().toString().length()-2);
 		
-		System.out.println(e.getSource().toString());
-		
 		if(funcion=='0') {
 			calculadora.insertar(funcion);
 		}
