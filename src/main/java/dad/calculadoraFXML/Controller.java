@@ -11,12 +11,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
 public class Controller implements Initializable {
 
 	private Calculadora calculadora= new Calculadora();
+	
+	private StringProperty numeros = new SimpleStringProperty();
 	
 	private char funcion;
 	
@@ -80,8 +84,6 @@ public class Controller implements Initializable {
 	@FXML
 	private Button botonIgual;
 
-	private StringProperty numeros = new SimpleStringProperty();
-
 	public Controller() throws IOException {
 		FXMLLoader loader= new FXMLLoader(getClass().getResource("/fxml/View.fxml"));
 		loader.setController(this);
@@ -90,6 +92,25 @@ public class Controller implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
+		MenuItem clasicoItem= new MenuItem("Clasico");
+		clasicoItem.setOnAction(e->{
+			panelTotal.getStylesheets().clear();
+			panelTotal.getStylesheets().add("/css/clasicaCSS.css");
+		});
+		
+		MenuItem modernoItem= new MenuItem("Moderno");
+		modernoItem.setOnAction(e->{
+			panelTotal.getStylesheets().clear();
+			panelTotal.getStylesheets().add("/css/modernoCSS.css");
+		});
+		
+		ContextMenu menu = new ContextMenu(clasicoItem, modernoItem);
+		
+		panelTotal.setOnContextMenuRequested(e->{
+			menu.show(panelTotal, e.getSceneX(), e.getSceneY());
+		});
+		
 		panelNumeros1.textProperty().bind(numeros);
 	}
 
@@ -100,7 +121,7 @@ public class Controller implements Initializable {
 	@FXML
 	private void onClick (ActionEvent e) {
 	
-		funcion=e.getSource().toString().charAt(e.getSource().toString().length()-2);
+		funcion=e.getSource().toString().charAt(e.getSource().toString().length()-2);	
 		
 		if(funcion=='0') {
 			calculadora.insertar(funcion);
